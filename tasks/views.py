@@ -2,6 +2,7 @@ import requests
 from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib import messages
+from django.core.exceptions import ValidationError
 from .models import Task
 from urllib.parse import urlencode
 
@@ -42,7 +43,9 @@ def trigger_jenkins_build(request, task_id):
         if response.status_code in (200, 201):
             messages.success(request, "Build triggered successfully!")
         else:
-            messages.error(request, f"Failed: {response.status_code} - {response.text}")
+            raise ValidationError(
+                f"Jenkins API Error ({response.status_code}): {response.text}"
+            )
             
     except Exception as e:
         messages.error(request, f"Error: {str(e)}")
