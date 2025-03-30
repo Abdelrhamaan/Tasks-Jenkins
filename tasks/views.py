@@ -11,7 +11,7 @@ def trigger_jenkins_build(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     
     params = {
-        'token': 'task',  # From Jenkins job config
+        'token': 'Task',  # From Jenkins job config
         'BRANCH_NAME': task.branch_name,
         'MIGRATIONS': 'true' if task.migrations else 'false',
         'COLLECT_STATIC': 'true' if task.collectstatic else 'false',  # Fixed name
