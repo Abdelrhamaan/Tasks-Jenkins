@@ -17,6 +17,7 @@ def trigger_jenkins_build(request, task_id):
         'COLLECT_STATIC': 'true' if task.collectstatic else 'false',  # Fixed name
         'MODULE_NAME': task.module_name,
         'SCRIPT_NAME': task.script_name or '',
+        'job': 'TaskManagementPipeline'
     }
     
     session = requests.Session()
@@ -32,7 +33,7 @@ def trigger_jenkins_build(request, task_id):
         
         # Send build trigger
         response = session.post(
-            "http://54.174.41.239:8080/buildByToken/buildWithParameters?job=TaskManagementPipeline",
+            "http://54.174.41.239:8080/buildByToken/buildWithParameters/",
             data=urlencode(params),
             headers={
                 crumb['crumbRequestField']: crumb['crumb'],
