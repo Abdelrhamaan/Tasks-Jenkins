@@ -7,8 +7,8 @@ from django.db import models
 
 class Task(models.Model):
     MODULE_CHOICES = [
-        ("module1", "Module 1"),
-        ("module2", "Module 2"),
+        ("employees", "Employees"),
+        ("departments", "Departments"),
     ]
 
     module_name = models.CharField(max_length=50, choices=MODULE_CHOICES)
