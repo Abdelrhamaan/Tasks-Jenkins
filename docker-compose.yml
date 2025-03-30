@@ -1,5 +1,28 @@
 version: '3.8'
+
 services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    user: root
+    privileged: true
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /mnt/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/bin/docker:/usr/bin/docker
+      - ./jenkins-data:/var/jenkins_home
+    environment:
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
   task_management:
     build: .
     ports:
@@ -8,10 +31,13 @@ services:
       - .:/app
     depends_on:
       - db
+      - jenkins
+
   db:
     image: postgres:latest
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
       POSTGRES_DB: task_management_db
-
+    volumes:
+      - /mnt/postgres_data:/var/lib/postgresql/data
