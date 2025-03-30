@@ -1,4 +1,3 @@
-# views.py
 import requests
 from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
@@ -16,16 +15,27 @@ def trigger_jenkins_build(request, task_id):
         'SCRIPT_NAME': task.script_name or '',
     }
     
-    # Use your Jenkins username and API token for authentication
+    # Jenkins credentials from settings
     auth = (settings.JENKINS_USER, settings.JENKINS_API_TOKEN)
     
-    response = requests.post(jenkins_url, params=params, auth=auth)
+    # Get the Jenkins crumb
+    crumb_url = "http://54.174.41.239:8080/crumbIssuer/api/json"
+    try:
+        crumb_response = requests.get(crumb_url, auth=auth)
+        crumb_response.raise_for_status()
+        crumb_data = crumb_response.json()
+        headers = {crumb_data['crumbRequestField']: crumb_data['crumb']}
+    except Exception as e:
+        messages.error(request, f"Failed to get Jenkins crumb: {e}")
+        return redirect('/admin/tasks/task/')
     
-    if response.status_code == 201:
+    # Trigger the build with POST and include the crumb in headers
+    response = requests.post(jenkins_url, params=params, auth=auth, headers=headers)
+    
+    if response.status_code in (200, 201):
         messages.success(request, "Jenkins build triggered successfully!")
     else:
         messages.error(request, f"Failed to trigger Jenkins build: {response.content}")
     
     # Redirect back to the admin page (adjust the URL as needed)
     return redirect('/admin/tasks/task/')
-
