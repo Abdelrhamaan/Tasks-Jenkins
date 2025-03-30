@@ -15,7 +15,7 @@ services:
       - /usr/bin/docker:/usr/bin/docker
       - ./jenkins-data:/var/jenkins_home
     environment:
-      - JAVA_OPTS=-Djenkins.install.runSetupWizard=false
+      - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080"]
