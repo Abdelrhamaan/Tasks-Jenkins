@@ -32,7 +32,7 @@ def trigger_jenkins_build(request, task_id):
         
         # Send build trigger
         response = session.post(
-            "http://54.174.41.239:8080/job/TaskManagementPipeline/buildByToken/buildWithParameters",
+            "http://54.174.41.239:8080/buildByToken/buildWithParameters?job=TaskManagementPipeline",
             data=urlencode(params),
             headers={
                 crumb['crumbRequestField']: crumb['crumb'],
