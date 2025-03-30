@@ -11,7 +11,7 @@ def trigger_jenkins_build(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     
     params = {
-        # 'token': '11c941667827b7e01ae2b3ff7f132b7f51',  # From Jenkins job config
+        'token': '12345',  # From Jenkins job config
         'BRANCH_NAME': task.branch_name,
         'MIGRATIONS': 'true' if task.migrations else 'false',
         'COLLECT_STATIC': 'true' if task.collectstatic else 'false',  # Fixed name
@@ -32,7 +32,7 @@ def trigger_jenkins_build(request, task_id):
         
         # Send build trigger
         response = session.post(
-            "http://54.174.41.239:8080/buildByToken/buildWithParameters",
+            "http://54.174.41.239:8080/job/TaskManagementPipeline/buildByToken/buildWithParameters",
             data=urlencode(params),
             headers={
                 crumb['crumbRequestField']: crumb['crumb'],
