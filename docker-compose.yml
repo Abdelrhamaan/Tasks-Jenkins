@@ -5,7 +5,6 @@ services:
     image: jenkins/jenkins:lts-jdk17
     container_name: jenkins-service
     user: root
-    privileged: true
     ports:
       - "8080:8080"
       - "50000:50000"
@@ -13,25 +12,20 @@ services:
       - /mnt/jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/bin/docker:/usr/bin/docker
-      - ./jenkins-data:/var/jenkins_home
     environment:
       - JAVA_OPTS=-Djenkins.install.runSetupWizard=true
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   task_management:
-    build: .
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     volumes:
       - .:/app
     depends_on:
       - db
-      - jenkins
 
   db:
     image: postgres:latest
