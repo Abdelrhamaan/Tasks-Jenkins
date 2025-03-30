@@ -11,7 +11,7 @@ class TaskAdmin(admin.ModelAdmin):
 
     def start_pipeline(self, obj):
         # Assuming you have configured a URL pattern named 'trigger_jenkins_build'
-        url = reverse("trigger_jenkins_build", args=[obj.id])
+        url = reverse("tasks/trigger_jenkins_build", args=[obj.id])
         return format_html('<a class="button" href="{}">Start Pipeline</a>', url)
 
     start_pipeline.short_description = "Pipeline"
