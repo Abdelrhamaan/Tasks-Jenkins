@@ -127,3 +127,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+JENKINS_USER="aboody"
+JENKINS_API_TOKEN="11c941667827b7e01ae2b3ff7f132b7f51"
