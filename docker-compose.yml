@@ -3,7 +3,7 @@ version: '3.8'
 services:
   jenkins:
     image: jenkins/jenkins:lts-jdk17
-    container_name: jenkins
+    container_name: jenkins-service
     user: root
     privileged: true
     ports:
