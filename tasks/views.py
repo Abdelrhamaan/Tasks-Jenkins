@@ -48,6 +48,7 @@ def trigger_jenkins_build(request, task_id):
             )
             
     except Exception as e:
-        messages.error(request, f"Error: {str(e)}")
+        # Wrap all exceptions in ValidationError
+        raise ValidationError(f"Pipeline trigger failed: {str(e)}")
     
     return redirect('/admin/tasks/task/')
