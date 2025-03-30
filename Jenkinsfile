@@ -10,6 +10,12 @@ pipeline {
     }
 
     stages {
+        stage('Docker Compose Stop') {
+            steps {
+                // Bring up the containers (you may use -d if you want detached mode)
+                sh "docker-compose stop"
+            }
+        }
         stage('Checkout') {
             steps {
                 // Checkout the branch specified by the parameter
