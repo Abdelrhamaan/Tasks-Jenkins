@@ -40,6 +40,9 @@ def trigger_jenkins_build(request, task_id):
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         )
+        print("data", urlencode(params))
+        print("crumb", crumb['crumbRequestField'])
+        print("crumb", crumb['crumb'])
         
         if response.status_code in (200, 201):
             messages.success(request, "Build triggered successfully!")
